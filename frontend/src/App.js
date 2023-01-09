@@ -11,25 +11,24 @@ import { themeSettings } from "./theme";
 function App() {
   const mode = useSelector((state) => state.mode); // grab information from the store
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]); // The useMemo Hook can be used to keep expensive, resource intensive functions from needlessly running.
+  const isAuth = Boolean(useSelector((state) => state.token));
 
   return (
-    <div className="App">
+    <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-            <Routes>
-              <Route>
-                <Route path="/" element={<LoginPage />} />
-                <Route
-                  path="/home"
-                  element={<HomePage />}
-                />
-                <Route
-                  path="/profile/:userId"
-                  element={<ProfilePage />}
-                />
-              </Route>
-            </Routes>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route
+              path="/home"
+              element={isAuth ? <HomePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/profile/:userId"
+              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
+          </Routes>
         </ThemeProvider>
       </BrowserRouter>
     </div>
