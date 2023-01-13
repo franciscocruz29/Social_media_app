@@ -19,7 +19,17 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  let isFriend;
+  //this works only for home page
+  isFriend = friends.find((friend) => friend._id === friendId);
+
+  //checks if we are in the profile page
+  if (friends.map((friend) => friend._id).includes(_id)) {
+    isFriend = friends
+      .filter((friend) => friend._id === _id)
+      .map((friend) => friend._id)
+      .includes(_id);
+  }
 
   const patchFriend = async () => {
     const response = await fetch(
